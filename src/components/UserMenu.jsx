@@ -35,7 +35,7 @@ function UserMenu() {
   const handleLogout = useCallback(() => {
     Cookies.remove("auth");
     localStorage.removeItem("user");
-    localStorage.removeItem("latestproduct")
+    localStorage.removeItem("latestproduct");
     toast.success("로그아웃 완료!");
   });
 

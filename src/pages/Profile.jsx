@@ -73,7 +73,7 @@ function Profile() {
           <div className={`translate duration-300 h-full`}>
             <div className="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none ">
               <div style={{ gap: "1px" }}>
-                {imgUrl === "none" && imgUrl === undefined ? (
+                {imgUrl !== "none" && imgUrl !== undefined ? (
                   <div className="flex flex-col justify-center items-center">
                     <img className="w-[200px] h-[200px] " src={imgUrl} />
                   </div>
