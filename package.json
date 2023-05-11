@@ -27,7 +27,7 @@
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
     "styled-component": "^2.8.0",
-    "styled-components": "^5.3.10",
+    "styled-components": "^6.0.0-rc.1",
     "web-vitals": "^2.1.4",
     "zustand": "^4.3.8"
   },

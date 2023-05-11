@@ -18,7 +18,6 @@ function RegisterModal() {
     onSuccess: (data) => {
         registerModal.onClose()
         loginModal.onOpen()
-        console.log(data)
     },
     onError: (error) => {
 

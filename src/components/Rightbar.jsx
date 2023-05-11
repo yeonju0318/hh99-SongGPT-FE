@@ -72,12 +72,6 @@ function Rightbar() {
     e.preventDefault()
     const user = localStorage.getItem("user");
     const authCookie = Cookies.get("auth");
-
-    if (user && !authCookie) {
-      localStorage.removeItem("user");
-      window.location.replace("/");
-      return toast.error("세션이 만료되었습니다. 다시 로그인해주세요!");
-    }
     if (Cookies.get("auth") === undefined) {
       localStorage.removeItem("user");
       return toast.error("로그인이 필요한 기능입니다!");
@@ -85,6 +79,12 @@ function Rightbar() {
     if (comment.trim().length === 0) {
       return toast.error("내용을 작성해주세요!");
     }
+    if (user && !authCookie) {
+      localStorage.removeItem("user");
+      window.location.replace("/");
+      return toast.error("세션이 만료되었습니다. 다시 로그인해주세요!");
+    }
+  
     const newComment = { content: comment, postId: id };
     addCommentMutation.mutate(newComment);
   };

@@ -13,17 +13,20 @@ function UserMenu() {
   // const isLoggined = useIsLoggined();
   const [isOpen, setIsOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const navigate = useNavigate()
-
-
+  const navigate = useNavigate();
+  const [userImage, setUserImage] = useState("none");
   useEffect(() => {
-    let user = null
-    if((localStorage.getItem("user")) !== "undefined") {
+    let user = null;
+    let userImage = "none";
+    if (localStorage.getItem("user") !== "undefined") {
       user = JSON.parse(localStorage.getItem("user"));
+      if (localStorage.getItem("user")?.image !== "none") {
+        userImage = JSON.parse(localStorage.getItem("user"))?.image;
+      }
       setCurrentUser(user);
-
+      setUserImage(userImage);
     }
-  }, []);
+  }, [userImage]);
 
   const toggleOpen = useCallback(() => {
     setIsOpen((value) => !value);
@@ -31,9 +34,11 @@ function UserMenu() {
 
   const handleLogout = useCallback(() => {
     Cookies.remove("auth");
-    localStorage.removeItem("user")
+    localStorage.removeItem("user");
+    localStorage.removeItem("latestproduct")
     toast.success("로그아웃 완료!");
   });
+
   return (
     <div className="relative z-20">
       <div className="flex flex-row items-center gap-3">
@@ -62,7 +67,11 @@ function UserMenu() {
               height="30"
               width="30"
               alt="Avatar"
-              src={process.env.PUBLIC_URL + "/imgs/placeholder.jpg"}
+              src={
+                userImage !== "none"
+                  ? userImage
+                  : process.env.PUBLIC_URL + "/imgs/placeholder.jpg"
+              }
             />
           </div>
         </div>
@@ -87,7 +96,7 @@ function UserMenu() {
               ) : (
                 <div
                   onClick={() => {
-                    navigate("/profile")
+                    navigate("/profile");
                     setIsOpen(false);
                   }}
                   className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"

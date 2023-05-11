@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidenav from "./Sidenav";
 import Select from "./Select";
 import useGenreTag from "../hooks/useGenreTag";
@@ -8,6 +8,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import useFeelTag from "../hooks/useFeelTag";
 import { Navigate, useNavigate } from "react-router-dom";
+import useInput from "../hooks/useInput";
+import GPTLoading from "./GPTLoading";
+import { toast } from "react-hot-toast";
 
 const Side = () => {
   const today = {
@@ -31,9 +34,9 @@ const Side = () => {
   const feelTag = useFeelTag();
   const GenreTag = useGenreTag();
   const WeatherTag = useWeatherTag();
-  const { answer } = useAnswerGpt();
+  const answer = useAnswerGpt();
+  const userInput = useInput();
 
-  console.log(feelTag.feelTag.tag, WeatherTag.WeatherTag.tag);
   const feelWeather = `${feelTag.feelTag.tag}${WeatherTag.WeatherTag.tag}`;
   let gradient = "";
   switch (feelWeather) {
@@ -464,14 +467,13 @@ const Side = () => {
   const navigate = useNavigate();
   const onShareButton = async () => {
     const message = {
-      question: `${feelTag.feelTag.text}${GenreTag.GenreTag.text}${WeatherTag.WeatherTag.text}`,
-      answer: answer,
+      question: `${feelTag.feelTag.text}\n${GenreTag.GenreTag.text}\n${WeatherTag.WeatherTag.text}\n${userInput.inputText}`,
+      answer: answer.answer,
       feelTag: `${feelTag.feelTag.tag}`,
       weatherTag: `${WeatherTag.WeatherTag.tag}`,
       genreTag: `${GenreTag.GenreTag.tag}`,
       gradient: gradient,
     };
-    console.log(message);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/post`,
@@ -482,14 +484,19 @@ const Side = () => {
           },
         }
       );
-      console.log(response.data);
+
 
       if (response.data.status === "OK") {
         const detailUrl = `/Detail/${response.data.data}`;
         navigate(detailUrl);
+        feelTag.setFeelTag("");
+        GenreTag.setGenreTag("");
+        WeatherTag.setWeatherTag("");
+        answer.setAnswerGpt("");
+        userInput.setInputText("");
       }
     } catch (error) {
-      console.log(error);
+      toast.error("게시글 등록에 실패했습니다!");
     }
   };
 
@@ -510,6 +517,7 @@ const Side = () => {
           공유하기
         </button>
       </div>
+      
     </div>
   );
 };

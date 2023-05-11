@@ -32,11 +32,11 @@ const getUserLikes = async () => {
 const getDetailPost = async (postId) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/board/${postId}`,{
+      `${process.env.REACT_APP_SERVER_URL}/board/${postId}`, Cookies.get("auth") ? {
         headers: {
           Access_Token: `Bearer ${Cookies.get("auth")}`,
         },
-      }
+      } : {}
     );
     return response.data;
   } catch (error) {

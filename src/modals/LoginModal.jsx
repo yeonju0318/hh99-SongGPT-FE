@@ -40,7 +40,7 @@ function LoginModal() {
       window.location.replace("/");
       toast.success("어서오세요!");
     } catch (err) {
-      toast.error(err.response);
+      console.log(err)
     }
   };
   // 핸들러 부분

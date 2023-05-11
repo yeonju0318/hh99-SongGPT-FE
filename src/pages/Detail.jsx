@@ -9,13 +9,19 @@ import useLatestPost from "../hooks/useLastestPost";
 function Detail() {
   const {id} = useParams()
   const setLatestPost = useLatestPost();
+  
   useEffect(() => {
     if (localStorage.getItem("latestproduct") === null) {
       localStorage.setItem("latestproduct", JSON.stringify([id]));
       setLatestPost.setLatestPost([id]);
     } else {
       let arr = JSON.parse(localStorage.getItem("latestproduct"));
-      arr.push(id);
+      if(arr.length === 6) {
+        arr.shift()
+        arr.push(id);
+      } else {
+        arr.push(id);
+      }
       let newLatestProduct = new Set(arr);
       localStorage.setItem(
         "latestproduct",

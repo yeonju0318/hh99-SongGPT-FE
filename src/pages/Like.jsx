@@ -6,6 +6,7 @@ import { getPosts, getUserLikes } from "../api/post";
 import Container from "../components/Container";
 import EmptyState from "../components/EmptyState";
 import ListingCard from "../components/ListingCard";
+import Loading from "../components/Loading";
 
 function Like() {
   const [ref, inView] = useInView();
@@ -44,7 +45,7 @@ function Like() {
       console.log(err);
     }
     setLoading(false);
-  }, [page, setPosts]);
+  }, [page]);
 
   // `getItems` 가 바뀔 때 마다 함수 실행
   useEffect(() => {
@@ -57,10 +58,10 @@ function Like() {
       const newPage = page + 1;
       setPage(newPage);
     }
-  }, [inView, loading]);
+  }, [inView]);
 
   if (unusePosts.isLoading || userLikes.isLoading || loading) {
-    return <div>로딩중입니다</div>;
+    return  <Loading/>;
   }
 
   if (unusePosts.isError || userLikes.isError) {

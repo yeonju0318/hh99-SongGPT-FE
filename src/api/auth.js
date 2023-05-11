@@ -21,7 +21,7 @@ const addUser = async (newUser) => {
     // } else {
     //   toast.error(error.response.data.data);
     // }
-    console.log(error.response)
+    toast.error(error.response.message)
   }
 };
 

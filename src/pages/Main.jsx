@@ -1,12 +1,15 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import _ from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useInView } from "react-intersection-observer";
 import { useQueries } from "react-query";
 import { getPosts, getUserLikes } from "../api/post";
 import Container from "../components/Container";
 import EmptyState from "../components/EmptyState";
 import ListingCard from "../components/ListingCard";
+import Loading from "../components/Loading";
 import useAllPosts from "../hooks/useAllPosts";
 import useFeelCategories from "../hooks/useFeelCategories";
 import useGenreCategories from "../hooks/useGenreCategories";
@@ -38,20 +41,23 @@ function Main() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let i = 0;
-      let postArr = [];
       try {
-        while (i < totalPage) {
-          const response = await axios.get(
-            `${process.env.REACT_APP_SERVER_URL}/board?page=${i}&size=12&sort=createdAt,DESC`
-          );
-          postArr.push(response.data.data.postResponseDtos);
-          i++;
-        }
+        const response = await axios.get(
+          `${process.env.REACT_APP_SERVER_URL}/boards`,
+          Cookies.get("auth")
+            ? {
+                headers: {
+                  Access_Token: `Bearer ${Cookies.get("auth")}`,
+                },
+              }
+            : {}
+        );
+      
+        // console.log(response.data)
+        allPosts.setAllPosts(response.data.data);
       } catch (err) {
-        console.log(err);
+    
       }
-      allPosts.setAllPosts(postArr.flat());
     };
 
     fetchData();
@@ -88,7 +94,7 @@ function Main() {
   //전체 게시글 데이터
 
   if (unusePosts.isLoading || loading) {
-    return <div>로딩중입니다</div>;
+    return <Loading/>;
   }
 
   if (unusePosts.isError) {
