@@ -72,6 +72,7 @@ function Main() {
       );
       const newPosts = response.data.data.postResponseDtos;
       setPosts([...posts, ...newPosts]);
+      allPosts.setAllPosts([...posts,...newPosts]);
     } catch (err) {
       console.log(err);
     }

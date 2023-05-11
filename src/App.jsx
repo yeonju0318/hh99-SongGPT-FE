@@ -63,7 +63,7 @@ function App() {
     }
   );
 
-
+console.log(unusePosts.data.postResponseDtos)
 
   return (
     <>
