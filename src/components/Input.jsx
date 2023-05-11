@@ -20,11 +20,12 @@ function Input() {
   const { inputText, setInputText } = useInput();
   const GPTLoading = useGPTLoading()
   const onSendMessage = async () => {
-    GPTLoading.onLoading()
+    console.log(1)
     const messageText = `${feelTag.feelTag.text}${GenreTag.GenreTag.text}${WeatherTag.WeatherTag.text}${inputText}`;
     const message = {
       question: messageText,
     };
+    GPTLoading.onLoading()
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/chat-gpt/question`,
