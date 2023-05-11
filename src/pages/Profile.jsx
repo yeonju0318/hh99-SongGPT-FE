@@ -5,8 +5,59 @@ import { changeProfile } from "../api/auth";
 import useCloudinaryUrl from "../hooks/useCloudinaryUrl";
 import { Image } from "cloudinary-react";
 import { toast } from "react-hot-toast";
+import AWS from "aws-sdk"
+import Cookies from "js-cookie";
+
 
 function Profile() {
+  //AWS이미지 업로드
+  const region = "ap-northeast-2";
+  const bucket = "song-github-actions-s3-bucket";
+
+  AWS.config.update({
+    region: region,
+    accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+  });
+
+  const handleFileInput = async (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/member/profile`,
+      {
+        image:"123",
+      },
+      {
+        headers: {
+          Access_Token: `Bearer ${Cookies.get("auth")}`,
+        },
+      }
+    );
+
+    const upload = new AWS.S3.ManagedUpload({
+      params: {
+        Bucket: bucket, // 버킷 이름
+        Key: "123" + ".png", // 유저 아이디
+        Body: file, // 파일 객체
+      },
+    });
+
+    const promise = upload.promise();
+    promise.then(
+      function () {
+        // 이미지 업로드 성공
+        window.setTimeout(function () {
+          window.location.reload();
+        }, 2000);
+      },
+      function (err) {
+        toast.error(err.response.data.message);
+        // 이미지 업로드 실패
+      }
+    );
+  };
+
   // 클라우디너리에 이미지 업로드하는 코드
   const cloudinaryUrl = useCloudinaryUrl();
   const [imageSelected, setImageSelected] = useState(null);
@@ -68,9 +119,13 @@ function Profile() {
                 )}
                 <div className="flex justify-end mt-2 gap-3">
                   <input
-                    onChange={(e) => {
-                      setImageSelected(e.target.files[0]);
-                    }}
+                  // onClick={handleFileInput}
+                    onChange={
+                      handleFileInput
+                    //   (e) => {
+                    //   setImageSelected(e.target.files[0]);
+                    // }
+                  }
                     type="file"
                     class="block w-full text-sm text-slate-500
                     file:mr-4 file:py-2 file:px-4
@@ -85,9 +140,11 @@ function Profile() {
                     className={` rounded-lg hover:opacity-80 transition w-20
                         bg-blue-500 border-blue-500 text-white py-0.5 text-sm font-semibold border-2 
                         `}
-                    onClick={uploadImage}
+                    onClick={
+                      
+                      uploadImage
+                    }
                   >
-                    {" "}
                     미리보기
                   </button>
                 </div>

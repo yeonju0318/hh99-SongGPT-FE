@@ -11,13 +11,13 @@ function ListingCard({
   likeStatus,
   likeCount,
   likeLists,
-  gradient
+  gradient,
 }) {
   const navigate = useNavigate();
 
   return (
     <div className="group col-span-1 cursor-pointer">
-      <div className="flex flex-col gap-2 w-full ">
+      <div className="flex flex-col gap-2 w-full animate-slideup ">
         <div
           onClick={(e) => { navigate(`/detail/${id}`);
           }}

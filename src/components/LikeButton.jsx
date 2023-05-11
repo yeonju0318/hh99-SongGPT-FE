@@ -28,17 +28,17 @@ function LikeButton({ itemId, likeStatus, likeCount, onDetail }) {
   const toggleLike = async (e) => {
     const user = localStorage.getItem("user");
     const authCookie = Cookies.get("auth");
-
-    if (user && !authCookie) {
-      localStorage.removeItem("user");
-      window.location.replace("/");
-      return toast.error("세션이 만료되었습니다. 다시 로그인해주세요!");
-    }
     if (Cookies.get("auth") === undefined) {
       e.stopPropagation();
       localStorage.removeItem("user");
       return toast.error("로그인이 필요한 기능입니다!");
     }
+    if (user && !authCookie) {
+      localStorage.removeItem("user");
+      window.location.replace("/");
+      return toast.error("세션이 만료되었습니다. 다시 로그인해주세요!");
+    }
+
     if (hasLiked) {
       // 좋아요 취소
       try {

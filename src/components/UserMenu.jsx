@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import React, { useCallback, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 // import useIsLoggined from "../hooks/useIsLoggined";
@@ -16,9 +17,11 @@ function UserMenu() {
 
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"))
-    if (user !== undefined && user?.nickname.length > 0) {
+    let user = null
+    if((localStorage.getItem("user")) !== "undefined") {
+      user = JSON.parse(localStorage.getItem("user"));
       setCurrentUser(user);
+
     }
   }, []);
 
@@ -29,7 +32,7 @@ function UserMenu() {
   const handleLogout = useCallback(() => {
     Cookies.remove("auth");
     localStorage.removeItem("user")
-    alert("로그아웃 완료!");
+    toast.success("로그아웃 완료!");
   });
   return (
     <div className="relative z-20">

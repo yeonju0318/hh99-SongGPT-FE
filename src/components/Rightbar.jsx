@@ -20,8 +20,10 @@ function Rightbar() {
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [onEdit, setOnEdit] = useState(null);
-  const user = JSON.parse(localStorage.getItem("user"))?.nickname;
-
+  let user = null
+  if((localStorage.getItem("user")) !== "undefined") {
+    user = JSON.parse(localStorage.getItem("user"))?.nickname;
+  }
   const addCommentMutation = useMutation(addComment, {
     onSuccess: () => {
       queryClient.invalidateQueries("detailPost");

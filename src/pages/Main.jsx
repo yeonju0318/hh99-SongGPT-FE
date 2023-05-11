@@ -56,6 +56,7 @@ function Main() {
 
     fetchData();
   }, []);
+
   // 서버에서 아이템을 가지고 오는 함수
   const getItems = useCallback(async () => {
     setLoading(true);
@@ -86,7 +87,7 @@ function Main() {
 
   //전체 게시글 데이터
 
-  if (unusePosts.isLoading) {
+  if (unusePosts.isLoading || loading) {
     return <div>로딩중입니다</div>;
   }
 
@@ -105,12 +106,11 @@ function Main() {
   } else {
     // 모두 선택되지 않았을 때
     if (feelTag === null && weatherTag === null && genreTag === null) {
-      
       return (
         <>
           <Container>
             <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {allPosts.allPosts.flat().map((item) => {
+              {posts.flat().map((item) => {
                 return (
                   <>
                     <ListingCard
@@ -135,211 +135,275 @@ function Main() {
       let filteredArr = allPosts.allPosts.filter(
         (item) => item.feelTag === feelTag
       );
-      return (
-        <>
-          <Container>
-            <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {filteredArr.map((item) => {
-                return (
-                  <>
-                    <ListingCard
-                      id={item.id}
-                      feel={item?.feelTag}
-                      weather={item?.weatherTag}
-                      genre={item?.genreTag}
-                      likeStatus={userLikes.data?.includes(item.id)}
-                      likeCount={item?.likeCount}
-                      gradient={item?.gradient}
-
-                    />
-                  </>
-                );
-              })}
+      if (filteredArr.length === 0 || filteredArr === undefined) {
+        return (
+          <>
+            <div className="md:ml-48 absolute inset-x-0 flex justify-center ">
+              <EmptyState showReset={true} />
             </div>
-          </Container>
-          <div ref={ref}></div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Container>
+              <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
+                {filteredArr.map((item) => {
+                  return (
+                    <>
+                      <ListingCard
+                        id={item.id}
+                        feel={item?.feelTag}
+                        weather={item?.weatherTag}
+                        genre={item?.genreTag}
+                        likeStatus={userLikes.data?.includes(item.id)}
+                        likeCount={item?.likeCount}
+                        gradient={item?.gradient}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Container>
+            <div ref={ref}></div>
+          </>
+        );
+      }
     } else if (feelTag === null && weatherTag !== null && genreTag === null) {
       // weather Tag만 선택
       let filteredArr = allPosts.allPosts.filter(
         (item) => item.weatherTag === weatherTag
       );
-      return (
-        <>
-          <Container>
-            <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {filteredArr.map((item) => {
-                return (
-                  <>
-                    <ListingCard
-                      id={item.id}
-                      feel={item?.feelTag}
-                      weather={item?.weatherTag}
-                      genre={item?.genreTag}
-                      likeStatus={userLikes.data?.includes(item.id)}
-                      likeCount={item?.likeCount}
-                      gradient={item?.gradient}
-
-                    />
-                  </>
-                );
-              })}
+      if (filteredArr.length === 0 || filteredArr === undefined) {
+        return (
+          <>
+            <div className="md:ml-48 absolute inset-x-0 flex justify-center ">
+              <EmptyState showReset={true} />
             </div>
-          </Container>
-          <div ref={ref}></div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Container>
+              <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
+                {filteredArr.map((item) => {
+                  return (
+                    <>
+                      <ListingCard
+                        id={item.id}
+                        feel={item?.feelTag}
+                        weather={item?.weatherTag}
+                        genre={item?.genreTag}
+                        likeStatus={userLikes.data?.includes(item.id)}
+                        likeCount={item?.likeCount}
+                        gradient={item?.gradient}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Container>
+            <div ref={ref}></div>
+          </>
+        );
+      }
     } else if (feelTag === null && weatherTag === null && genreTag !== null) {
       // genre Tag만 선택
       let filteredArr = allPosts.allPosts.filter(
         (item) => item.genreTag === genreTag
       );
-      return (
-        <>
-          <Container>
-            <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {filteredArr.map((item) => {
-                return (
-                  <>
-                    <ListingCard
-                      id={item.id}
-                      feel={item?.feelTag}
-                      weather={item?.weatherTag}
-                      genre={item?.genreTag}
-                      likeStatus={userLikes.data?.includes(item.id)}
-                      likeCount={item?.likeCount}
-                      gradient={item?.gradient}
-
-                    />
-                  </>
-                );
-              })}
+      if (filteredArr.length === 0 || filteredArr === undefined) {
+        return (
+          <>
+            <div className="md:ml-48 absolute inset-x-0 flex justify-center ">
+              <EmptyState showReset={true} />
             </div>
-          </Container>
-          <div ref={ref}></div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Container>
+              <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
+                {filteredArr.map((item) => {
+                  return (
+                    <>
+                      <ListingCard
+                        id={item.id}
+                        feel={item?.feelTag}
+                        weather={item?.weatherTag}
+                        genre={item?.genreTag}
+                        likeStatus={userLikes.data?.includes(item.id)}
+                        likeCount={item?.likeCount}
+                        gradient={item?.gradient}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Container>
+            <div ref={ref}></div>
+          </>
+        );
+      }
     } else if (feelTag !== null && weatherTag !== null && genreTag === null) {
       // feelTag, weatherTag 선택
       let filteredArr = allPosts.allPosts
         .filter((item) => item.feelTag === feelTag)
         .filter((item) => item.weatherTag === weatherTag);
-      return (
-        <>
-          <Container>
-            <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {filteredArr.map((item) => {
-                return (
-                  <>
-                    <ListingCard
-                      id={item.id}
-                      feel={item?.feelTag}
-                      weather={item?.weatherTag}
-                      genre={item?.genreTag}
-                      likeStatus={userLikes.data?.includes(item.id)}
-                      likeCount={item?.likeCount}
-                      gradient={item?.gradient}
-
-                    />
-                  </>
-                );
-              })}
+      if (filteredArr.length === 0 || filteredArr === undefined) {
+        return (
+          <>
+            <div className="md:ml-48 absolute inset-x-0 flex justify-center ">
+              <EmptyState showReset={true} />
             </div>
-          </Container>
-          <div ref={ref}></div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Container>
+              <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
+                {filteredArr.map((item) => {
+                  return (
+                    <>
+                      <ListingCard
+                        id={item.id}
+                        feel={item?.feelTag}
+                        weather={item?.weatherTag}
+                        genre={item?.genreTag}
+                        likeStatus={userLikes.data?.includes(item.id)}
+                        likeCount={item?.likeCount}
+                        gradient={item?.gradient}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Container>
+            <div ref={ref}></div>
+          </>
+        );
+      }
     } else if (feelTag !== null && weatherTag === null && genreTag !== null) {
       // feelTag, genreTag 선택
       let filteredArr = allPosts.allPosts
         .filter((item) => item.feelTag === feelTag)
         .filter((item) => item.genreTag === genreTag);
-      return (
-        <>
-          <Container>
-            <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {filteredArr.map((item) => {
-                return (
-                  <>
-                    <ListingCard
-                      id={item.id}
-                      feel={item?.feelTag}
-                      weather={item?.weatherTag}
-                      genre={item?.genreTag}
-                      likeStatus={userLikes.data?.includes(item.id)}
-                      likeCount={item?.likeCount}
-                      gradient={item?.gradient}
-
-                    />
-                  </>
-                );
-              })}
+      if (filteredArr.length === 0 || filteredArr === undefined) {
+        return (
+          <>
+            <div className="md:ml-48 absolute inset-x-0 flex justify-center ">
+              <EmptyState showReset={true} />
             </div>
-          </Container>
-          <div ref={ref}></div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Container>
+              <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
+                {filteredArr.map((item) => {
+                  return (
+                    <>
+                      <ListingCard
+                        id={item.id}
+                        feel={item?.feelTag}
+                        weather={item?.weatherTag}
+                        genre={item?.genreTag}
+                        likeStatus={userLikes.data?.includes(item.id)}
+                        likeCount={item?.likeCount}
+                        gradient={item?.gradient}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Container>
+            <div ref={ref}></div>
+          </>
+        );
+      }
     } else if (feelTag === null && weatherTag !== null && genreTag !== null) {
       // weatherTag, genreTag 선택
       let filteredArr = allPosts.allPosts
         .filter((item) => item.weatherTag === weatherTag)
         .filter((item) => item.genreTag === genreTag);
-      return (
-        <>
-          <Container>
-            <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {filteredArr.map((item) => {
-                return (
-                  <>
-                    <ListingCard
-                      id={item.id}
-                      feel={item?.feelTag}
-                      weather={item?.weatherTag}
-                      genre={item?.genreTag}
-                      likeStatus={userLikes.data?.includes(item.id)}
-                      likeCount={item?.likeCount}
-                      gradient={item?.gradient}
-
-                    />
-                  </>
-                );
-              })}
+      if (filteredArr.length === 0 || filteredArr === undefined) {
+        return (
+          <>
+            <div className="md:ml-48 absolute inset-x-0 flex justify-center ">
+              <EmptyState showReset={true} />
             </div>
-          </Container>
-          <div ref={ref}></div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Container>
+              <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
+                {filteredArr.map((item) => {
+                  return (
+                    <>
+                      <ListingCard
+                        id={item.id}
+                        feel={item?.feelTag}
+                        weather={item?.weatherTag}
+                        genre={item?.genreTag}
+                        likeStatus={userLikes.data?.includes(item.id)}
+                        likeCount={item?.likeCount}
+                        gradient={item?.gradient}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Container>
+            <div ref={ref}></div>
+          </>
+        );
+      }
     } else if (feelTag !== null && weatherTag !== null && genreTag !== null) {
       // feelTag, weatherTag, genreTag 선택
       let filteredArr = allPosts.allPosts
         .filter((item) => item.feelTag === feelTag)
         .filter((item) => item.weatherTag === weatherTag)
         .filter((item) => item.genreTag === genreTag);
-      return (
-        <>
-          <Container>
-            <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
-              {filteredArr.map((item) => {
-                return (
-                  <>
-                    <ListingCard
-                      id={item.id}
-                      feel={item?.feelTag}
-                      weather={item?.weatherTag}
-                      genre={item?.genreTag}
-                      likeStatus={userLikes.data?.includes(item.id)}
-                      likeCount={item?.likeCount}
-                      gradient={item.gradient}
-                    />
-                  </>
-                );
-              })}
+      if (filteredArr.length === 0 || filteredArr === undefined) {
+        return (
+          <>
+            <div className="md:ml-48 absolute inset-x-0 flex justify-center ">
+              <EmptyState showReset={true} />
             </div>
-          </Container>
-          <div ref={ref}></div>
-        </>
-      );
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Container>
+              <div className="pt-24 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  2xl:grid-cols-6 gap-8">
+                {filteredArr.map((item) => {
+                  return (
+                    <>
+                      <ListingCard
+                        id={item.id}
+                        feel={item?.feelTag}
+                        weather={item?.weatherTag}
+                        genre={item?.genreTag}
+                        likeStatus={userLikes.data?.includes(item.id)}
+                        likeCount={item?.likeCount}
+                        gradient={item.gradient}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Container>
+            <div ref={ref}></div>
+          </>
+        );
+      }
     }
   }
 }

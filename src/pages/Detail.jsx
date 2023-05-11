@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDetailPost } from "../api/post";
 import Chat from "../components/Chat";
 import Rightbar from "../components/Rightbar";
+import useLatestPost from "../hooks/useLastestPost";
 
 function Detail() {
   const {id} = useParams()
+  const setLatestPost = useLatestPost();
+  useEffect(() => {
+    if (localStorage.getItem("latestproduct") === null) {
+      localStorage.setItem("latestproduct", JSON.stringify([id]));
+      setLatestPost.setLatestPost([id]);
+    } else {
+      let arr = JSON.parse(localStorage.getItem("latestproduct"));
+      arr.push(id);
+      let newLatestProduct = new Set(arr);
+      localStorage.setItem(
+        "latestproduct",
+        JSON.stringify([...newLatestProduct])
+      );
+      setLatestPost.setLatestPost([...newLatestProduct]);
+    }
+  }, []);
+
+
+
   const { isLoading, isError, data: detailPost } = useQuery('detailPost', () => getDetailPost(Number(id)), {
     refetchOnWindowFocus: false,
   })

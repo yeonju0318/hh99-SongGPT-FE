@@ -17,8 +17,11 @@ function Chat({ detailPage }) {
   } = useQuery("detailPost", () => getDetailPost(Number(id)), {
     refetchOnWindowFocus: false,
   });
-
-  const user = JSON.parse(localStorage.getItem("user"))?.nickname;
+  
+  let user = null
+  if((localStorage.getItem("user")) !== "undefined") {
+    user = JSON.parse(localStorage.getItem("user"))?.nickname;
+  }
 
   if (isLoading) {
     return <div>로딩중 입니다...</div>;

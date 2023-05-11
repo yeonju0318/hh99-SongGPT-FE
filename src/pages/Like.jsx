@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useQueries } from "react-query";
-import { Link } from "react-router-dom";
 import { getPosts, getUserLikes } from "../api/post";
 import Container from "../components/Container";
 import EmptyState from "../components/EmptyState";
@@ -60,7 +59,7 @@ function Like() {
     }
   }, [inView, loading]);
 
-  if (unusePosts.isLoading || userLikes.isLoading) {
+  if (unusePosts.isLoading || userLikes.isLoading || loading) {
     return <div>로딩중입니다</div>;
   }
 
@@ -84,18 +83,16 @@ function Like() {
               likeLists.map((item) => {
                 return (
                   <>
-                    <Link to={`/detail/${item.id}`} key={item.id}>
-                      <ListingCard
-                        id={item.id}
-                        feel={item?.feelTag}
-                        weather={item?.weatherTag}
-                        genre={item?.genreTag}
-                        likeStatus={userLikes.data?.includes(item.id)}
-                        likeCount={item?.likeCount}
-                        likeLists={likeLists}
-                        gradient={item?.gradient}
-                      />
-                    </Link>
+                    <ListingCard
+                      id={item.id}
+                      feel={item?.feelTag}
+                      weather={item?.weatherTag}
+                      genre={item?.genreTag}
+                      likeStatus={userLikes.data?.includes(item.id)}
+                      likeCount={item?.likeCount}
+                      likeLists={likeLists}
+                      gradient={item?.gradient}
+                    />
                   </>
                 );
               })}

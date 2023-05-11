@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import React from "react";
 import { toast } from "react-hot-toast";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useFeelCategories from "../hooks/useFeelCategories";
 import useGenreCategories from "../hooks/useGenreCategories";
 import useWeatherCategories from "../hooks/useWeatherCategories";
@@ -17,10 +17,10 @@ function Sidebar() {
 }
 
 const NavLinks = () => {
+  const navigate = useNavigate()
   const feelCategories = useFeelCategories();
   const weatherCategories = useWeatherCategories();
   const genreCategories = useGenreCategories();
-  console.log(feelCategories.feelCategories)
   const filterReset = () => {
     feelCategories.setFeelCategories(null);
     weatherCategories.setWeatherCategories(null);
@@ -51,19 +51,19 @@ const NavLinks = () => {
           filterReset();
           const user = localStorage.getItem("user");
           const authCookie = Cookies.get("auth");
-
+          if (Cookies.get("auth") === undefined) {
+            e.preventDefault();
+            localStorage.removeItem("user");
+            navigate("/");
+            return toast.error("로그인이 필요한 기능입니다!");
+          }
           if (user && !authCookie) {
             e.preventDefault();
             localStorage.removeItem("user");
             window.location.replace("/");
             return toast.error("세션이 만료되었습니다. 다시 로그인해주세요!");
           }
-          if (Cookies.get("auth") === undefined) {
-            e.preventDefault();
-            localStorage.removeItem("user");
-            window.location.replace("/");
-            return toast.error("로그인이 필요한 기능입니다!");
-          }
+
         }}
         className="flex flex-row justify-start items-center my-8 text-1xl font-medium  text-black hover:text-cyan-400"
       >
