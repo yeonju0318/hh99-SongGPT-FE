@@ -68,7 +68,7 @@ function UserMenu() {
               width="30"
               alt="Avatar"
               src={
-                userImage !== "none"
+                userImage !== "none" && userImage !== undefined
                   ? userImage
                   : process.env.PUBLIC_URL + "/imgs/placeholder.jpg"
               }

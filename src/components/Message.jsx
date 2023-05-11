@@ -18,7 +18,7 @@ function Message(props) {
             <div className="messageInfo">
               <img
                 src={
-                  userImage !== "none"
+                  userImage !== "none" && userImage !== undefined
                     ? userImage
                     : process.env.PUBLIC_URL + "/imgs/placeholder.jpg"
                 }

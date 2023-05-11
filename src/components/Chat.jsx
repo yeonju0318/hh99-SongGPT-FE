@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getDetailPost } from "../api/post";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Loading from "./Loading";
 
 function Chat({ detailPage }) {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function Chat({ detailPage }) {
   }
 
   if (isLoading) {
-    return <div>로딩중 입니다...</div>;
+    return <Loading/>;
   }
 
   const onDeletePost = async () => {

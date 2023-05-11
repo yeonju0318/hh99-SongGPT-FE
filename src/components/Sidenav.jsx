@@ -1,7 +1,7 @@
 import React from "react";
 
 function Sidenav() {
-  let userImage = null;
+  let userImage = "none";
   let nickname = null;
   if (localStorage.getItem("user") !== "undefined") {
     userImage = JSON.parse(localStorage.getItem("user"))?.image;
@@ -13,7 +13,7 @@ function Sidenav() {
       <div className="user">
         <img
           src={
-            userImage
+            userImage !== "none" && userImage !== undefined
               ? userImage
               : process.env.PUBLIC_URL + "/imgs/placeholder.jpg"
           }

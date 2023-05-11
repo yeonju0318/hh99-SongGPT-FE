@@ -19,8 +19,8 @@ function Input() {
   const { setAnswerGpt } = useAnswerGpt();
   const { inputText, setInputText } = useInput();
   const GPTLoading = useGPTLoading()
+  
   const onSendMessage = async () => {
-    console.log(1)
     const messageText = `${feelTag.feelTag.text}${GenreTag.GenreTag.text}${WeatherTag.WeatherTag.text}${inputText}`;
     const message = {
       question: messageText,

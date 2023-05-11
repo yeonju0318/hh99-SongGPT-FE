@@ -91,7 +91,6 @@ function Main() {
     }
   }, [inView, loading]);
 
-  //전체 게시글 데이터
 
   if (unusePosts.isLoading || loading) {
     return <Loading/>;
